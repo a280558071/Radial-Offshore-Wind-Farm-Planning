@@ -29,7 +29,7 @@ Ur_Hours=2000/8760;  % annual hours of OWFs
 Pr_ele=200;  % 0.85 гд/kWh = 850 гд/MWh
 Obj_loss=Ur_Hours*8760*20*sum(sum(r.*(Pij_all.^2)))*Pr_ele;
 Obj_WindCurt=M*sum(sum(Pw_shed));
-Obj=Obj_inv+Obj_WindCurt+Obj_loss;
+Obj=Obj_inv+Obj_loss;
 % Obj=Obj_inv+Obj_WindCurt; %HKY
 % Obj=sum(Cost.*x);
 
@@ -98,9 +98,10 @@ size(Cons);
 % Cons=[Cons,Cons_SCF];
 %% Cons4: Power balance
 Cons_S=[];
-Cons_S=[Cons_S,In*Pij(:,1)==[-(Pw-Pw_shed(:,1));g_Sub_P(:,1)]];
+% Cons_S=[Cons_S,In*Pij(:,1)==[-(Pw-Pw_shed(:,1));g_Sub_P(:,1)]];
+Cons_S=[Cons_S,In*Pij(:,1)==[-Pw;g_Sub_P(:,1)]];
 Cons_S=[Cons_S,Pij==sum(Pij_all,2)];
-Cons_S=[Cons_S,Pw>=Pw_shed(:,1)>=0];
+% Cons_S=[Cons_S,Pw>=Pw_shed(:,1)>=0];
 Cons=[Cons,Cons_S];
 display('******Cons. on Power Balance Completed!******')
 size(Cons_S);
