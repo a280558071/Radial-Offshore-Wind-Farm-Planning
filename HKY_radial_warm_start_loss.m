@@ -14,7 +14,8 @@ close all
 HKY30_conditions_warm_start_loss_42WT;
 
 %% Model formulation and solve the problem
-OWF_ECSP_LDF_warm_start_loss;
+% OWF_ECSP_LDF_warm_start_loss;
+OWF_ECSP_LDF_warm_start_loss_noCurtail;
 
 %% save the data
 % 获取当前时间
