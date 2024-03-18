@@ -1,0 +1,53 @@
+function pi=plot_one_type(i,L,N_WT,N_Subs,I,J,s_x,s_y,s_Pij,s_Theta,Coord_WT,Coord_OS,CCS,Bij,n_cab)
+
+figure;
+All_Inv_Cables=find(round(sum(s_x,2))==1);  % use round() because not all s_x would be exactly equal to 1
+I_temp=I(All_Inv_Cables)';
+J_temp=J(All_Inv_Cables)';
+Gi=graph(I_temp,J_temp);
+pi=plot(Gi,'Layout','force');
+pi.XData=[Coord_WT(:,1)',Coord_OS(:,1)'];
+pi.YData=[Coord_WT(:,2)',Coord_OS(:,2)'];
+% labelnode(pi,N_Subs,{'Sub'});
+% 设置所有节点为透明
+highlight(pi,N_WT, 'Marker', 'none','MarkerSize', 10);
+% 获取风机节点的坐标
+WT_XCoords = pi.XData(N_WT);
+WT_YCoords = pi.YData(N_WT);
+% 使用plot函数绘制空心圆
+hold on;  % 保持当前图像，以便在其上绘制
+for k = 1:length(N_WT)
+    plot(WT_XCoords(k), WT_YCoords(k), 'o', 'MarkerSize', 10, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'none','LineWidth',1);
+end
+hold off;
+% highlight(pi,N_WT,'Marker','o', 'MarkerSize', 20, 'NodeColor', 'k');  % Wind Turbines
+highlight(pi,N_Subs,'Marker','s','NodeColor','k','Markersize',20);  % Substations
+% purple_colors = [0.9922 0.9373 0.9961; 0.8745 0.7725 0.9882; 0.7216 0.5137 0.9725; 0.4549 0.0118 0.9098; 0.1882 0.0 0.5961; 0.0118 0.0 0.1176];
+% purple_colors = [89 1 76] / 255;  % Different purple colors
+purple_colors = [89 1 76] / 255;
+% purple_colors = ['k'];
+% purple_colors = [203 232 238; 210 192 221; 175 140 242; 120 53 132; 89 1 76; 44 22 75] / 255;  % Different purple colors
+for i=1:size(s_x,1)
+    for j=1:size(s_x,2)
+        if s_x(i,j)==1
+            highlight(pi,I(i),J(i),'EdgeColor',purple_colors(j,:),'LineWidth',6);
+        end
+    end
+end
+
+highlight(pi,N_WT,'Marker','o', 'MarkerSize', 10, 'NodeColor', 'w');
+% color=[[0.6350 0.0780 0.1840];[0.8500 0.3250 0.0980];[0.9290 0.6940 0.1250];
+    % [0.4660 0.6740 0.1880];[0 0.4470 0.7410];[0.4940 0.1840 0.5560]];
+% color=['r','g','b','k','y','m'];
+% for i=1:size(s_x,1)
+%     for j=1:size(s_x,2)
+%         if s_x(i,j)==1
+%             highlight(pi,I(i),J(i),'EdgeColor',color(j,:),'LineWidth',6);
+%         end
+%     end
+% end
+% color=['r','g','b','k','y'];
+
+% highlight(pi,I_temp,J_temp,'EdgeColor','r','LineWidth',6); % bold line denotes the newly-built line
+% text(pi.XData, pi.YData, pi.NodeLabel,'HorizontalAlignment', 'center','FontSize', 15); % put nodes' label in right position.
+pi.NodeLabel={};
